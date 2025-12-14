@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Alex and Liam Great Gatsby Game</title>
+    <style>
+        body {
+            font-family: Georgia, serif;
+            background: linear-gradient(180deg, #0f172a, #1e293b, #064e3b);
+            min-height: 100vh;
+            color: white;
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #fbbf24;
+            text-align: center;
+            font-size: 2.5em;
+        }
+        .credits {
+            text-align: center;
+            color: #fbbf24;
+            font-style: italic;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+        .box {
+            background: rgba(0,0,0,0.6);
+            border: 2px solid #d97706;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .quote {
+            font-style: italic;
+            text-align: center;
+            color: #fde68a;
+            font-size: 1.2em;
+            margin: 20px 0;
+            padding: 15px;
+            border-left: 4px solid #d97706;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .stat {
+            background: #1e293b;
+            border: 2px solid #22c55e;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .events {
+            background: #1e293b;
+            border: 1px solid #475569;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .event {
+            color: #cbd5e1;
+            margin-bottom: 10px;
+        }
+        .choices {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        button {
+            background: #0f766e;
+            color: white;
+            border: none;
+            padding: 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: left;
+            font-family: Georgia, serif;
+            font-size: 1em;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        .btn-primary {
+            background: #d97706;
+            text-align: center;
+            padding: 20px 40px;
+            width: 100%;
+            font-size: 1.2em;
+        }
+        .btn-honest { background: #15803d; }
+        .btn-illegal { background: #b91c1c; }
+        .btn-party { background: #7c3aed; }
+        .btn-daisy { background: #db2777; }
+        .btn-mansion { background: #d97706; }
+        .btn-confess { background: #475569; }
+        .hidden { display: none; }
+        .choice-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .choice-desc {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="screen1" class="box">
+            <h1>The Great Gatsby: American Dream</h1>
+            <div class="credits">A Game by Alex and Liam</div>
+            <p class="quote">"So we beat on, boats against the current, borne back ceaselessly into the past."</p>
+            <p style="margin: 20px 0;">You are Jay Gatsby, born poor as James Gatz. Can the American Dream truly be achieved?</p>
+            <p style="margin: 20px 0;">Fitzgerald suggests the dream is an illusion, corrupted by materialism and impossible class barriers.</p>
+            <button class="btn-primary" onclick="start()">Begin Your Pursuit</button>
+        </div>
+
+        <div id="screen2" class="hidden">
+            <h1>The Pursuit of the American Dream</h1>
+            <div class="credits">By Alex and Liam</div>
+            
+            <div class="stats">
+                <div class="stat"><div>Wealth</div><div class="stat-value" id="s1">0</div></div>
+                <div class="stat"><div>Daisy</div><div class="stat-value" id="s2">0</div></div>
+                <div class="stat"><div>Reputation</div><div class="stat-value" id="s3">0</div></div>
+                <div class="stat"><div>Corruption</div><div class="stat-value" id="s4">0</div></div>
+                <div class="stat"><div>Time</div><div class="stat-value" id="s5">0/8</div></div>
+            </div>
+
+            <div class="events">
+                <h2 style="color: #fbbf24;">Your Story</h2>
+                <div id="log"></div>
+            </div>
+
+            <div class="box">
+                <h2 style="color: #fbbf24;">What will you do?</h2>
+                <div class="choices">
+                    <button class="btn-honest" onclick="choose(1)">
+                        <div class="choice-title">Work Honestly</div>
+                        <div class="choice-desc">Slow wealth, good reputation</div>
+                    </button>
+                    <button class="btn-illegal" onclick="choose(2)">
+                        <div class="choice-title">Enter Bootlegging</div>
+                        <div class="choice-desc">Fast wealth, high corruption</div>
+                    </button>
+                    <button class="btn-party" onclick="choose(3)">
+                        <div class="choice-title">Throw Lavish Party</div>
+                        <div class="choice-desc">Cost: 30 wealth</div>
+                    </button>
+                    <button class="btn-daisy" onclick="choose(4)">
+                        <div class="choice-title">Pursue Daisy</div>
+                        <div class="choice-desc">Requires: 50+ wealth</div>
+                    </button>
+                    <button class="btn-mansion" onclick="choose(5)">
+                        <div class="choice-title">Buy Mansion</div>
+                        <div class="choice-desc">Cost: 80 wealth</div>
+                    </button>
+                    <button class="btn-confess" onclick="choose(6)">
+                        <div class="choice-title">Confess Your Past</div>
+                        <div class="choice-desc">Lose reputation</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="screen3" class="hidden box">
+            <h1 id="endtitle"></h1>
+            <div class="credits">By Alex and Liam</div>
+            <p id="endtext" style="font-size: 1.1em; margin: 20px 0; line-height: 1.6;"></p>
+            <div style="background: #1e293b; padding: 20px; border-radius: 8px; border-left: 4px solid #d97706; margin: 20px 0;">
+                <h3 style="color: #fbbf24;">Fitzgerald Message:</h3>
+                <p id="endlesson"></p>
+            </div>
+            <p class="quote">"Gatsby believed in the green light, the orgastic future that year by year recedes before us."</p>
+            <button class="btn-primary" onclick="start()">Try Again</button>
+        </div>
+    </div>
+
+    <script>
+        var w = 0;
+        var d = 0;
+        var r = 0;
+        var c = 0;
+        var t = 0;
+        var log = [];
+
+        function start() {
+            w = 20;
+            d = 0;
+            r = 10;
+            c = 0;
+            t = 0;
+            log = [];
+            log.push('You are Jay Gatsby, a young man from humble beginnings with a dream...');
+            document.getElementById('screen1').className = 'box hidden';
+            document.getElementById('screen3').className = 'hidden box';
+            document.getElementById('screen2').className = '';
+            update();
+        }
+
+        function update() {
+            document.getElementById('s1').textContent = w;
+            document.getElementById('s2').textContent = d;
+            document.getElementById('s3').textContent = r;
+            document.getElementById('s4').textContent = c;
+            document.getElementById('s5').textContent = t + '/8';
+            var html = '';
+            for (var i = 0; i < log.length; i++) {
+                html = html + '<div class="event">' + log[i] + '</div>';
+            }
+            document.getElementById('log').innerHTML = html;
+        }
+
+        function addLog(msg) {
+            log.push(msg);
+            if (log.length > 5) {
+                log.shift();
+            }
+        }
+
+        function choose(n) {
+            t = t + 1;
+            if (n === 1) {
+                w = w + 10;
+                r = r + 5;
+                addLog('You work honestly, but wealth grows slowly. The dream feels distant.');
+            } else if (n === 2) {
+                w = w + 40;
+                c = c + 30;
+                r = r + 10;
+                addLog('You enter the illegal liquor trade. Money flows fast, but at what cost?');
+            } else if (n === 3) {
+                if (w >= 30) {
+                    w = w - 30;
+                    r = r + 20;
+                    d = d + 15;
+                    addLog('Your lavish party dazzles hundreds. But does Daisy notice?');
+                } else {
+                    addLog('You lack the wealth for such extravagance.');
+                }
+            } else if (n === 4) {
+                if (w >= 50) {
+                    d = d + 25;
+                    addLog('You reach out to Daisy through Nick. Hope flickers, but she is married to Tom...');
+                } else {
+                    addLog('Without great wealth, Daisy remains an impossible dream.');
+                }
+            } else if (n === 5) {
+                if (w >= 80) {
+                    w = w - 80;
+                    r = r + 30;
+                    d = d + 20;
+                    addLog('You buy a mansion across the bay. Every night you reach toward the green light.');
+                } else {
+                    addLog('The mansion remains beyond your grasp.');
+                }
+            } else if (n === 6) {
+                r = r - 40;
+                c = c - 20;
+                d = d - 30;
+                addLog('You reveal your criminal past. Society turns against you. Daisy recoils.');
+            }
+
+            if (t >= 8 || c >= 100) {
+                endgame();
+            }
+            update();
+        }
+
+        function endgame() {
+            var title = '';
+            var text = '';
+            var lesson = '';
+            if (w >= 150 && d >= 60) {
+                title = 'The Hollow Victory';
+                text = 'You accumulated vast wealth and won moments with Daisy. But she chose Tom. Your fortune means nothing. You float face-down in your pool. The green light was always unreachable.';
+                lesson = 'Fitzgerald shows that wealth cannot buy love or acceptance. The past cannot be repeated, and the American Dream is corrupted by materialism and class.';
+            } else if (w >= 100) {
+                title = 'Rich but Empty';
+                text = 'You became wealthy through crime. Hundreds attended your parties, but you died alone. Nobody came to your funeral. Daisy never loved you.';
+                lesson = 'Material success means nothing without genuine human connection. The dream built on corruption is hollow.';
+            } else if (c >= 80) {
+                title = 'Destroyed by Corruption';
+                text = 'Your illegal dealings caught up with you. Tom exposed you. Daisy abandoned you. Like Gatsby, you chased an impossible dream and paid the ultimate price.';
+                lesson = 'The corrupt means required to achieve wealth destroy the dreamer. The system is rigged against outsiders.';
+            } else {
+                title = 'Forever Reaching';
+                text = 'Without great wealth, you remained invisible to Daisy. You stood at the shore, reaching toward the green light, but the aristocracy never opened their doors.';
+                lesson = 'Class barriers are insurmountable. The American Dream promises opportunity but delivers only the illusion of possibility.';
+            }
+            document.getElementById('endtitle').textContent = title;
+            document.getElementById('endtext').textContent = text;
+            document.getElementById('endlesson').textContent = lesson;
+            document.getElementById('screen2').className = 'hidden';
+            document.getElementById('screen3').className = 'box';
+        }
+    </script>
+</body>
+</html>
